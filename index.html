@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LogsHub demo site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" type="text/css" href="/dist/css/logshub.min.css">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://www.logshub.com/js/typeahead.jquery.min.js"></script>
+  <script src="https://www.logshub.com/js/handlebars.min.js"></script>
+  <script src="/dist/js/logshub.js"></script>
+</head>
+<body>
+  <h1>LogsHub Demo</h1>
+
+  <!-- Example 1 -->
+  <h3>1. Simple</h3>
+  <div id="search-box-1"></div>
+
+  <script id="template-demo-1" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{#if is_category}}
+      <span class="category">Category: </span>
+      {{/if}}
+      <span class="value">{{name}}</span>
+    </div>
+  </script>
+  <script>
+      const logshubSearchDomain = 'uk01.apisearch.logshub.com';
+      const logshubPublicKey = 'NdsaVNi';
+      const demo1 = new LogsHubAutoComplete({
+          domain: logshubSearchDomain,
+          pubKey: logshubPublicKey,
+          container: '#search-box-1',
+          redirectUri: 'https://google.com',
+          sources: [{
+            templates: {
+              suggestion: Handlebars.compile($('#template-demo-1').html())
+            }
+          }]
+      });
+
+      demo1.init();
+  </script>
+
+  <!-- Example 2 -->
+  <h3>2. Simple with categories</h3>
+  <div id="search-box-2"></div>
+
+  <script id="template-demo-2" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{#if is_category}}
+        <span class="category">Category: </span>
+      {{/if}}
+      <span class="value">{{name}}</span>
+    </div>
+  </script>
+  <script>
+      const demo2 = new LogsHubAutoComplete({
+          domain: logshubSearchDomain,
+          pubKey: logshubPublicKey,
+          container: '#search-box-2',
+          features: 'products,categories,fullresponse',
+          datasets: [{
+            templates: {
+              suggestion: Handlebars.compile($('#template-demo-2').html())
+            }
+          }]
+      });
+
+      demo2.init();
+  </script>
+
+  <!-- Example 3 -->
+  <h3>3. Simple with backdrop</h3>
+  <div id="search-box-3"></div>
+
+  <script>
+      const demo3 = new LogsHubAutoComplete({
+          domain: logshubSearchDomain,
+          pubKey: logshubPublicKey,
+          container: '#search-box-3',
+          backdrop: true,
+      });
+
+      demo3.init();
+  </script>
+
+  <!-- Example 4 -->
+  <h3>4. Simple with backdrop, small picture and price</h3>
+  <div id="search-box-4"></div>
+
+  <script id="template-demo-4" type="text/x-handlebars-template">
+    <div class="lh-result-row flex">
+      {{#if is_category}}
+        <span class="label">Category: </span><span class="value">{{name}}</span>
+      {{else}}
+        {{#if url_image}}
+          <img class="image" src="{{url_image}}" alt="" />
+        {{/if}}
+
+        <div class="details">
+          <span class="name">{{name}}</span>
+          {{#if price}}
+            <span class="price">{{price}} {{currency}}</span>
+          {{/if}}
+
+          {{#each categories}}
+            <span class="category">{{this}}</span>
+          {{/each}}
+        </div>
+      {{/if}}
+    </div>
+  </script>
+  <script>
+      const demo4 = new LogsHubAutoComplete({
+          domain: logshubSearchDomain,
+          pubKey: logshubPublicKey,
+          container: '#search-box-4',
+          backdrop: true,
+          limit: 8,
+          defaultCurrency: 'USD',
+          defaultImages: [
+            'https://www.logshub.com/img/demo_prod_img/blue1.png',
+            'https://www.logshub.com/img/demo_prod_img/blue2.png',
+            'https://www.logshub.com/img/demo_prod_img/brown1.png',
+            'https://www.logshub.com/img/demo_prod_img/green1.png',
+            'https://www.logshub.com/img/demo_prod_img/orange1.png',
+            'https://www.logshub.com/img/demo_prod_img/purple1.png',
+            'https://www.logshub.com/img/demo_prod_img/red1.png',
+            'https://www.logshub.com/img/demo_prod_img/yellow1.png'
+          ],
+          datasets: [{
+            templates: {
+              suggestion: Handlebars.compile($('#template-demo-4').html())
+            }
+          }]
+      });
+
+      demo4.init();
+  </script>
+
+  <!-- Example 5 -->
+  <h3>5. Big pictures</h3>
+  <div id="search-box-5"></div>
+
+  <script id="template-categories-demo-5" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{name}}
+    </div>
+  </script>
+  <script id="template-products-demo-5" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{#if url_image}}
+        <img class="image image--big" src="{{url_image}}" alt=""/>
+      {{/if}}
+
+      <div class="details details--big">
+        <span class="name">{{name}}</span>
+
+        {{#each categories}}
+        <span class="category">{{this}}</span>
+        {{/each}}
+      </div>
+    </div>
+  </script>
+  <script>
+      const demo5 = new LogsHubAutoComplete({
+          domain: logshubSearchDomain,
+          pubKey: logshubPublicKey,
+          container: '#search-box-5',
+          classNames: {
+              dataset: 'tt-dataset tt-dataset--aside',
+              menu: 'tt-menu tt-menu--aside',
+              suggestion: 'tt-suggestion--aside'
+          },
+          limit: 6,
+          categoryLimit: 6,
+          defaultImages: [
+            'https://www.logshub.com/img/demo_prod_img/blue1.png',
+            'https://www.logshub.com/img/demo_prod_img/blue2.png',
+            'https://www.logshub.com/img/demo_prod_img/brown1.png',
+            'https://www.logshub.com/img/demo_prod_img/green1.png',
+            'https://www.logshub.com/img/demo_prod_img/orange1.png',
+            'https://www.logshub.com/img/demo_prod_img/purple1.png',
+            'https://www.logshub.com/img/demo_prod_img/red1.png',
+            'https://www.logshub.com/img/demo_prod_img/yellow1.png'
+          ],
+          datasets: [{
+             features: 'categories',
+             templates: {
+                suggestion: Handlebars.compile($('#template-categories-demo-5').html()),
+                notFound: ''
+              }
+            }, {
+              features: 'products',
+              templates: {
+                suggestion: Handlebars.compile($('#template-products-demo-5').html())
+              }
+          }]
+      });
+
+      demo5.init();
+  </script>
+
+  <!-- Example 6 -->
+  <h3>5. Fullscreen</h3>
+  <div id="search-box-6"></div>
+
+  <script id="template-categories-demo-6" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{name}}
+    </div>
+  </script>
+  <script id="template-products-demo-6" type="text/x-handlebars-template">
+    <div class="lh-result-row">
+      {{#if url_image}}
+      <img class="image image--big" src="{{url_image}}" alt=""/>
+      {{/if}}
+
+      <div class="details details--big">
+        <span class="name">{{name}}</span>
+
+        {{#each categories}}
+        <span class="category">{{this}}</span>
+        {{/each}}
+      </div>
+    </div>
+  </script>
+  <script>
+    const demo6 = new LogsHubAutoComplete({
+      domain: logshubSearchDomain,
+      pubKey: logshubPublicKey,
+      container: '#search-box-6',
+      classNames: {
+        dataset: 'tt-dataset tt-dataset--aside',
+        menu: 'tt-menu tt-menu--aside',
+        suggestion: 'tt-suggestion--aside'
+      },
+      fullscreen: true,
+      limit: 8,
+      defaultImages: [
+        'https://www.logshub.com/img/demo_prod_img/blue1.png',
+        'https://www.logshub.com/img/demo_prod_img/blue2.png',
+        'https://www.logshub.com/img/demo_prod_img/brown1.png',
+        'https://www.logshub.com/img/demo_prod_img/green1.png',
+        'https://www.logshub.com/img/demo_prod_img/orange1.png',
+        'https://www.logshub.com/img/demo_prod_img/purple1.png',
+        'https://www.logshub.com/img/demo_prod_img/red1.png',
+        'https://www.logshub.com/img/demo_prod_img/yellow1.png'
+      ],
+      datasets: [{
+        features: 'categories',
+        templates: {
+          suggestion: Handlebars.compile($('#template-categories-demo-6').html()),
+          notFound: ''
+        }
+      }, {
+        features: 'products',
+        templates: {
+          suggestion: Handlebars.compile($('#template-products-demo-6').html()),
+          notFound: ''
+        }
+      }]
+    });
+
+    demo6.init();
+  </script>
+</body>
+</html>
