@@ -22,6 +22,8 @@ class LogsHubAutoComplete {
         this.defaultCurrency = settings.defaultCurrency;
         this.defaultImages = settings.defaultImages;
 
+        this.categories = settings.categories;
+
         this.datasets = (settings.datasets || [{}]).map((source) => ({
             features: source.features,
             templates: source.templates || {}
@@ -43,17 +45,19 @@ class LogsHubAutoComplete {
 
     render() {
         this.$container.html(
-            `<form class="lh-form">
+            `<form class="lh-form ${this.categories ? 'lh-form--categories' : ''}">
               <div class="lh-form__row">
                 <div class="lh-form__input">
                   <input class="form-control" placeholder="${this.labels.placeholder}" />
-                </div>
-                <div class="lh-form__button">
+                </div>` +
+                (this.categories ? `<div class="lh-form__select">
+                    <select class="form-control tt-select">${this.buildOptions(this.categories)}</select></div>` : '') +
+                `<div class="lh-form__button">
                   <button type="submit" class="btn">${this.labels.button}</button>
                 </div>
-              </div>
-              <a href="#" class="lh-close"></a>
-            </form>`
+              </div>` +
+            (this.fullscreen ? '<a href="#" class="lh-close"></a>' : '') +
+            '</form>'
         );
     }
 
@@ -82,6 +86,20 @@ class LogsHubAutoComplete {
 
             this.searchRedirect(query || '');
         });
+    }
+
+    buildOptions(options) {
+        let $categories = '';
+
+        options.forEach((option) => {
+            if (!option.categories) {
+                $categories += `<option value="${option.value}">${option.label}</option>`;
+            } else {
+                $categories += `<optgroup label="${option.label}">${this.buildOptions(option.categories)}</optgroup>`
+            }
+        });
+
+        return $categories;
     }
 
     getDataSources() {
@@ -171,6 +189,7 @@ class LogsHubAutoComplete {
                 q: query,
                 features: this.features,
                 limit: this.limit,
+                category: this.$container.find('.tt-select').val(),
                 limit_cat: this.categoryLimit
             },
             dataType: 'jsonp'

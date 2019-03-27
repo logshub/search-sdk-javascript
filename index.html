@@ -63,6 +63,19 @@
           pubKey: logshubPublicKey,
           container: '#search-box-2',
           features: 'products,categories,fullresponse',
+          categories: [{
+            value: '',
+            label: 'All categories'
+          }, {
+            label: 'Categories',
+            categories: [{
+              value: 'home',
+              label: 'Home and garden'
+            }, {
+              value: 'child',
+              label: 'Child'
+            }]
+          }],
           datasets: [{
             templates: {
               suggestion: Handlebars.compile($('#template-demo-2').html())
