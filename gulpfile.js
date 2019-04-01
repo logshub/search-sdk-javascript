@@ -45,7 +45,7 @@ gulp.task('babel', function() {
     browserify({
         entries: './src/js/main.js',
         standalone: 'LogsHubAutoComplete',
-        debug: true
+        debug: false
     })
         .transform(babelify, {
             presets: ['@babel/preset-env']
