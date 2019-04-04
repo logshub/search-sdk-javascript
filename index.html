@@ -111,7 +111,7 @@
         <span class="label">Category: </span><span class="value">{{name}}</span>
       {{else}}
         {{#if url_image}}
-          <img class="image" src="{{url_image}}" alt="" />
+          <div class="image-container"><img class="image" src="{{url_image}}" alt="" /></div>
         {{/if}}
 
         <div class="details">
@@ -167,7 +167,7 @@
   <script id="template-products-demo-5" type="text/x-handlebars-template">
     <div class="lh-result-row">
       {{#if url_image}}
-        <img class="image image--big" src="{{url_image}}" alt=""/>
+        <div class="image-container"><img class="image image--big" src="{{url_image}}" alt=""/></div>
       {{/if}}
 
       <div class="details details--big">
@@ -230,7 +230,7 @@
   <script id="template-products-demo-6" type="text/x-handlebars-template">
     <div class="lh-result-row">
       {{#if url_image}}
-      <img class="image image--big" src="{{url_image}}" alt=""/>
+        <div class="image-container"><img class="image image--big" src="{{url_image}}" alt=""/></div>
       {{/if}}
 
       <div class="details details--big">
