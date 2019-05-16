@@ -14,16 +14,18 @@ Dependencies:
 
 Include files in your HTML. The minimum required for this plugin are:
 
-    <link href="/css/sdk.min.css" rel="stylesheet" />
+```html
+<link href="/css/sdk.min.css" rel="stylesheet" />
 
-    <script src="/js/typeahead.jquery.min.js" type="text/javascript"></script>
-    <script src="/js/sdk.js" type="text/javascript"></script>
+<script src="/js/typeahead.jquery.min.js" type="text/javascript"></script>
+<script src="/js/sdk.js" type="text/javascript"></script>
+```
 
 ## Basic usage
 
 To create a simple search service instance pass domain, application key and ID of an existing DOM element:
 
-```
+```js
 const example = new LogsHubAutoComplete({
     domain: 'uk01.apisearch.logshub.com',
     pubKey: 'your_pub_key',
@@ -36,7 +38,7 @@ example.init();
 
 HTML markup
 
-```
+```html
 <div id="search-box-6"></div>
 
 <script id="template-categories-demo-6" type="text/x-handlebars-template">
@@ -63,7 +65,7 @@ HTML markup
 
 JavaScript code
 
-```
+```js
 const fullScreenDemo = new LogsHubAutoComplete({
     domain: "uk01.apisearch.logshub.com",
     pubKey: 'NdsaVNi',
@@ -126,6 +128,8 @@ When initializing a component, you can specify a number of options:
 - `transform` (function) - Allows you to modify the results before displaying.
 - `onSelect` (function) - Fired when a option is selected. The event handler will be invoked with 3 arguments: the jQuery event object, the suggestion object that was selected, and the name of the dataset the suggestion belongs to.
 - `onSubmit` (function) - Fired when form is submitted. The event handler will be invoked with one argument: the jQuery event object.
+- `minLength` (number) - Minimum number of chars for searching.
+- `startupQuery` (string) - Query that will be sent for empty input.
 
 Templates can be overwritten by the option "datasources" and "templates" key:
 

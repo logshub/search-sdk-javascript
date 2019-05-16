@@ -33,6 +33,14 @@ function () {
     this.backdrop = settings.fullscreen ? true : settings.backdrop || false;
     this.fullscreen = settings.fullscreen || false;
     this.classNames = settings.classNames;
+    this.minLength = settings.minLength || 1;
+    this.startupQuery = settings.startupQuery || '';
+
+    if (this.startupQuery !== '') {
+      // if startup query exists, then min length must be 0
+      this.minLength = 0;
+    }
+
     this.labels = _objectSpread({
       placeholder: 'Start typing...',
       button: 'Search',
@@ -76,7 +84,7 @@ function () {
       (_this$$container$find = this.$container.find('input')).typeahead.apply(_this$$container$find, [{
         hint: true,
         highlight: true,
-        minLength: 1,
+        minLength: this.minLength,
         classNames: this.classNames
       }].concat(_toConsumableArray(this.getDataSources()))).on('typeahead:select', this.handleSelect.bind(this)).on('typeahead:open', this.handleOpen.bind(this)).on('typeahead:close', this.handleClose.bind(this));
     }
@@ -158,6 +166,10 @@ function () {
 
               return callback(rows);
             };
+
+            if (query === '') {
+              query = _this3.startupQuery;
+            }
 
             if (typeof _this3.cache[query] !== 'undefined') {
               if (_this3.cache[query].data) {

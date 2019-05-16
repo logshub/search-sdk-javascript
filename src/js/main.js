@@ -8,6 +8,12 @@ class LogsHubAutoComplete {
         this.backdrop = settings.fullscreen ? true : (settings.backdrop || false);
         this.fullscreen = settings.fullscreen || false;
         this.classNames = settings.classNames;
+        this.minLength = settings.minLength || 1;
+        this.startupQuery = settings.startupQuery || '';
+        if (this.startupQuery !== ''){
+            // if startup query exists, then min length must be 0
+            this.minLength = 0;
+        }
 
         this.labels = {
             placeholder: 'Start typing...',
@@ -65,7 +71,7 @@ class LogsHubAutoComplete {
         this.$container.find('input').typeahead({
             hint: true,
             highlight: true,
-            minLength: 1,
+            minLength: this.minLength,
             classNames: this.classNames
         }, ...this.getDataSources())
             .on('typeahead:select', this.handleSelect.bind(this))
@@ -141,6 +147,10 @@ class LogsHubAutoComplete {
 
                     return callback(rows);
                 };
+
+                if (query === '') {
+                    query = this.startupQuery;
+                }
 
                 if (typeof this.cache[query] !== 'undefined') {
                     if (this.cache[query].data) {
